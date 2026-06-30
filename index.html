@@ -176,7 +176,6 @@
     <label for="loa">Length Overall (LOA) — metres</label>
     <input type="number" id="loa" placeholder="e.g. 250" min="0" step="0.1" />
 
-
     <button onclick="calculate()">Calculate</button>
     <button class="reset-btn" onclick="resetAll()">Reset</button>
   </div>
@@ -184,7 +183,7 @@
   <div class="results" id="results">
 
     <div class="result-item">
-      <div class="result-label">Radius Planned<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-label">Radius Planned</div>
       <div class="result-right">
         <div class="result-value" id="out1">—</div>
         <div class="result-unit">m</div>
@@ -192,7 +191,7 @@
     </div>
 
     <div class="result-item">
-      <div class="result-label">Radius Anchored<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-label">Radius Anchored</div>
       <div class="result-right">
         <div class="result-value" id="out2">—</div>
         <div class="result-unit">m</div>
@@ -200,7 +199,7 @@
     </div>
 
     <div class="result-item">
-      <div class="result-label">Distance L<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-label">Distance L</div>
       <div class="result-right">
         <div class="result-value" id="out3">—</div>
         <div class="result-unit">m</div>
@@ -208,18 +207,18 @@
     </div>
 
     <div class="result-item">
-      <div class="result-label">Planned Area<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-label">Planned Area</div>
       <div class="result-right">
-        <div class="result-value" id="out3">—</div>
-        <div class="result-unit">Km&sup2</div>
+        <div class="result-value" id="out4">—</div>
+        <div class="result-unit">km&sup2;</div>
       </div>
     </div>
 
     <div class="result-item">
-      <div class="result-label">Anchored Area<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-label">Anchored Area</div>
       <div class="result-right">
-        <div class="result-value" id="out3">—</div>
-        <div class="result-unit">Km&sup2</div>
+        <div class="result-value" id="out5">—</div>
+        <div class="result-unit">km&sup2;</div>
       </div>
     </div>
 
@@ -230,7 +229,6 @@
   <script>
     function calculate() {
       const loa = parseFloat(document.getElementById('loa').value);
-     
 
       if (isNaN(loa) || loa <= 0) {
         alert('Please enter a valid LOA.');
@@ -241,11 +239,13 @@
       const out2 = (loa >= 150 ? 0.5 : 0.3) * (0.22 * loa + 104) + loa;
       const out3 = (loa >= 150 ? 0.5 : 0.3) * (0.22 * loa + 104);
       const out4 = Math.PI * Math.pow(out1 / 1000, 2);
-      const out3 = Math.PI * Math.pow(out2 / 1000, 2);
-	
+      const out5 = Math.PI * Math.pow(out2 / 1000, 2);
+
       document.getElementById('out1').textContent = out1.toFixed(1);
       document.getElementById('out2').textContent = out2.toFixed(1);
       document.getElementById('out3').textContent = out3.toFixed(1);
+      document.getElementById('out4').textContent = out4.toFixed(3);
+      document.getElementById('out5').textContent = out5.toFixed(3);
 
       document.getElementById('results').classList.add('visible');
     }
@@ -255,6 +255,8 @@
       document.getElementById('out1').textContent = '—';
       document.getElementById('out2').textContent = '—';
       document.getElementById('out3').textContent = '—';
+      document.getElementById('out4').textContent = '—';
+      document.getElementById('out5').textContent = '—';
       document.getElementById('results').classList.remove('visible');
     }
 
