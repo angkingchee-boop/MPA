@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LOA Calculator</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a1628;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .card {
+      background: #111e33;
+      border: 1px solid #1e3a5f;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 520px;
+      margin: 0 auto 24px auto;
+    }
+
+    .card h2 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #3b82f6;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 14px;
+      background: #0a1628;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus {
+      border-color: #3b82f6;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #3b82f6;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #2563eb; }
+
+    .reset-btn {
+      margin-top: 10px;
+      background: transparent;
+      border: 1px solid #1e3a5f;
+      color: #64748b;
+      font-size: 0.8rem;
+    }
+
+    .reset-btn:hover {
+      background: #1e3a5f;
+      color: #e2e8f0;
+    }
+
+    .results {
+      max-width: 520px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .results.visible { display: block; }
+
+    .result-item {
+      background: #111e33;
+      border: 1px solid #1e3a5f;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .result-item .result-label {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .result-item .result-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #3b82f6;
+    }
+
+    .result-item .result-unit {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 2px;
+      text-align: right;
+    }
+
+    .result-right {
+      text-align: right;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 0.75rem;
+      color: #334155;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>LOA Calculator</h1>
+    <p>Vessel Length Conversion Tool</p>
+  </header>
+
+  <div class="card">
+    <h2>Input</h2>
+
+    <label for="loa">Length Overall (LOA) — metres</label>
+    <input type="number" id="loa" placeholder="e.g. 250" min="0" step="0.1" />
+
+
+    <button onclick="calculate()">Calculate</button>
+    <button class="reset-btn" onclick="resetAll()">Reset</button>
+  </div>
+
+  <div class="results" id="results">
+
+    <div class="result-item">
+      <div class="result-label">Radius Planned<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-right">
+        <div class="result-value" id="out1">—</div>
+        <div class="result-unit">m</div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-label">Radius Anchored<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-right">
+        <div class="result-value" id="out2">—</div>
+        <div class="result-unit">m</div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-label">Distance L<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-right">
+        <div class="result-value" id="out3">—</div>
+        <div class="result-unit">m</div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-label">Planned Area<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-right">
+        <div class="result-value" id="out3">—</div>
+        <div class="result-unit">Km&sup2</div>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-label">Anchored Area<br><small style="color:#334155">Replace this label</small></div>
+      <div class="result-right">
+        <div class="result-value" id="out3">—</div>
+        <div class="result-unit">Km&sup2</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>MPA · POCC Internal Tool</footer>
+
+  <script>
+    function calculate() {
+      const loa = parseFloat(document.getElementById('loa').value);
+     
+
+      if (isNaN(loa) || loa <= 0) {
+        alert('Please enter a valid LOA.');
+        return;
+      }
+
+      const out1 = (loa >= 150 ? 0.7 : 0.5) * (0.22 * loa + 104) + loa;
+      const out2 = (loa >= 150 ? 0.5 : 0.3) * (0.22 * loa + 104) + loa;
+      const out3 = (loa >= 150 ? 0.5 : 0.3) * (0.22 * loa + 104);
+      const out4 = Math.PI * Math.pow(out1 / 1000, 2);
+      const out3 = Math.PI * Math.pow(out2 / 1000, 2);
+	
+      document.getElementById('out1').textContent = out1.toFixed(1);
+      document.getElementById('out2').textContent = out2.toFixed(1);
+      document.getElementById('out3').textContent = out3.toFixed(1);
+
+      document.getElementById('results').classList.add('visible');
+    }
+
+    function resetAll() {
+      document.getElementById('loa').value = '';
+      document.getElementById('out1').textContent = '—';
+      document.getElementById('out2').textContent = '—';
+      document.getElementById('out3').textContent = '—';
+      document.getElementById('results').classList.remove('visible');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+  </script>
+
+</body>
+</html>
